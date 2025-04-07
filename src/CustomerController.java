@@ -9,6 +9,9 @@ public class CustomerController {
     public void runMenu() throws SQLException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("1. Hämta alla kunder");
+        System.out.println("2. Hämta en kund efter ID");
+
+
         String select = scanner.nextLine();
 
         switch (select){
@@ -18,6 +21,9 @@ public class CustomerController {
                     System.out.println("KundId: " + customer.getCustomerId());
                     System.out.println("Namn: " + customer.getName());
                 }
+            case "2":
+                System.out.println("Hämta en kund");
+                String customerId =
 
         }
     }
