@@ -27,6 +27,8 @@ public class CustomerRepository {
         return customers;
     }
 
+
+
         public void insertCustomer(String name, String email, String password) throws SQLException{
             String sql = "INSERT INTO customers (name, email, password) VALUES (?, ?, ?)";
 

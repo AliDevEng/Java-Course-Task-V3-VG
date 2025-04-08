@@ -23,6 +23,8 @@ public class Customer {
         this.password = password;
     }
 
+
+
     public void introduce(){
         System.out.println("Hello! My name is " + this.name);
     }

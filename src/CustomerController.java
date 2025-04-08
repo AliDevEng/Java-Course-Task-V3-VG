@@ -44,6 +44,7 @@ public class CustomerController {
                 System.out.println("Ange ett password: ");
                 String password = scanner.nextLine();
                 customerService.insertUser(name,email,password);
+                break;
 
             case "4":
                 System.out.println("Ange id på den kund som ska uppdateras: ");
@@ -53,12 +54,14 @@ public class CustomerController {
                 String newEmail = scanner.nextLine();
                 boolean success = customerService.updateEmail(customerId,newEmail);
                 System.out.println(success ? "Kundmejl uppdaterad" : "Kund hittades ej");
+                break;
             case "5":
                 System.out.println("Ange id på den kund som ska raderas");
                 int idToDelete = scanner.nextInt();
                 scanner.nextLine();
                 boolean deleteSuccess = customerService.deleteCustomer(idToDelete);
                 System.out.println(deleteSuccess ? "Kund raderad" : "Kund hittades ej");
+                break;
             case "0":
                 return;
         }
