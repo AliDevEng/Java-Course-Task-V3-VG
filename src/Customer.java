@@ -1,3 +1,8 @@
+/**
+ * Customer-klassen representerar en kund i webshop-systemet.
+ * Den innehåller all information om en kund och metoder för att hantera denna information.
+ */
+
 public class Customer {
 
     private int customerId;
@@ -7,14 +12,16 @@ public class Customer {
     private String address;
     private String password;
 
+    // 3. Konstruktor för att skapa ett kundobjekt med grundläggande information
     public Customer(int customerId, String name, String email) {
         this.customerId = customerId;
         this.name = name;
         this.email = email;
     }
 
+    // 4. Konstruktor för att skapa ett kundobjekt med fullständig information
     public Customer
-            (int customerId, String name, String email, String phone, String address, String password) {
+    (int customerId, String name, String email, String phone, String address, String password) {
         this.customerId = customerId;
         this.name = name;
         this.email = email;
@@ -25,10 +32,12 @@ public class Customer {
 
 
 
+    // 5. Metod för att presentera kunden
     public void introduce(){
         System.out.println("Hello! My name is " + this.name);
     }
 
+    // Getter- och setter-metoder för att komma åt och ändra kundens attribut
     public int getCustomerId() {
         return customerId;
     }
