@@ -20,6 +20,7 @@ public class CustomerController {
         Scanner scanner = new Scanner(System.in);
 
         // Visa meny
+        System.out.println("== Kundmeny ==");
         System.out.println("1. Hämta alla kunder");
         System.out.println("2. Hämta en kund efter ID");
         System.out.println("3. Lägg till ny kund");
