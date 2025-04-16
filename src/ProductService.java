@@ -70,4 +70,49 @@ public class ProductService {
         return productRepository.updateStockQuantity(productId, newQuantity);
     }
 
+    // 52. Metod för att visa alla tillverkare
+    public void getAllManufacturers() throws SQLException {
+
+        System.out.println("ProductService hämtar alla tillverkare från repository");
+
+        ArrayList<String[]> manufacturers = productRepository.getAllManufacturers();
+
+        if (manufacturers.isEmpty()) {
+            System.out.println("Inga tillverkare hittades i systemet.");
+        } else {
+            System.out.println(" == TILLVERKARE ===");
+            for (String[] manufacturer : manufacturers) {
+                System.out.println(manufacturer[0] + ". " + manufacturer[1]);
+            }
+        }
+    }
+
+
+    // 53. Metod för att lägga till en ny produkt
+    public boolean
+    addProduct(String name, String description, double price, int stockQuantity, int manufacturerId)
+            throws SQLException {
+        System.out.println("ProductService lägger till ny produkt");
+
+        // Validera produktuppgifter
+        if (name == null || name.trim().isEmpty()) {
+            System.out.println("Produktnamn kan inte vara tomt");
+            return false;
+        }
+
+        if (price <= 0) {
+            System.out.println("Pris måste vara större än 0");
+            return false;
+        }
+
+        if (stockQuantity < 0) {
+            System.out.println("Lagersaldo kan inte vara negativt");
+            return false;
+        }
+
+        return productRepository.addProduct(name.trim(), description, price, stockQuantity, manufacturerId);
+    }
+
+
+
 }

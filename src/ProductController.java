@@ -24,6 +24,7 @@ public class ProductController {
         System.out.println("3. Sök produkter efter kategori");
         System.out.println("4. Uppdatera pris");
         System.out.println("5. Uppdatera lagersaldo");
+        System.out.println("6. Lägg till ny produkt");
         System.out.println("0. Återgå till huvudmeny");
 
 
@@ -59,6 +60,11 @@ public class ProductController {
             case "5":
                 // 48. Uppdatera lagersaldo på en produkt
                 updateProductStockQuantity(scanner);
+                break;
+
+            case "6":
+                // 54. Lägg till ny produkt
+                addNewProduct(scanner);
                 break;
 
             case "0":
@@ -225,6 +231,47 @@ public class ProductController {
             System.out.println("Ogiltigt format. Ange ett heltal.");
         } catch (SQLException e) {
             System.out.println("Ett fel uppstod vid uppdatering av lagersaldo: " + e.getMessage());
+            throw e;
+        }
+    }
+
+    // 55. Metod för att lägga till en ny produkt
+    private void addNewProduct(Scanner scanner) throws SQLException {
+        System.out.println("=== LÄG TILL NY PRODUKT ===");
+
+        try {
+            // Visa tillgängliga tillverkare
+            productService.getAllManufacturers();
+
+            // Hämta produktuppgifter från användaren
+            System.out.print("Ange produktnamn: ");
+            String name = scanner.nextLine();
+
+            System.out.print("Ange beskrivning: ");
+            String description = scanner.nextLine();
+
+            System.out.print("Ange pris: ");
+            double price = Double.parseDouble(scanner.nextLine());
+
+            System.out.print("Ange lagersaldo: ");
+            int stockQuantity = Integer.parseInt(scanner.nextLine());
+
+            System.out.print("Välj tillverkare (ange ID): ");
+            int manufacturerId = Integer.parseInt(scanner.nextLine());
+
+            // Lägg till produkten
+            boolean success = productService.addProduct(name, description, price, stockQuantity, manufacturerId);
+
+            if (success) {
+                System.out.println("Produkten har lagts till!");
+            } else {
+                System.out.println("Kunde inte lägga till produkten.");
+            }
+
+        } catch (NumberFormatException e) {
+            System.out.println("Ogiltigt format. Säkerställ att pris, lagersaldo och tillverkar-ID är korrekta värden.");
+        } catch (SQLException e) {
+            System.out.println("Ett fel uppstod vid tillägg av produkt: " + e.getMessage());
             throw e;
         }
     }

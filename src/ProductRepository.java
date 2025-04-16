@@ -154,4 +154,51 @@ public class ProductRepository {
             return rowsAffected > 0;
         }
     }
+
+    // 50. Metod för att lägga till en ny produkt
+    public boolean addProduct
+    (String name, String description, double price, int stockQuantity, int manufacturerId) throws SQLException {
+
+        String sql =
+                "INSERT INTO products (name, description, price, stock_quantity, manufacturer_id) VALUES (?, ?, ?, ?, ?)";
+
+        try (Connection conn = DriverManager.getConnection(URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, name);
+            pstmt.setString(2, description);
+            pstmt.setDouble(3, price);
+            pstmt.setInt(4, stockQuantity);
+            pstmt.setInt(5, manufacturerId);
+
+            int rowsAffected = pstmt.executeUpdate();
+            return rowsAffected > 0;
+        }
+    }
+
+    // 51. Metod för att hämta alla tillverkare
+    public ArrayList<String[]> getAllManufacturers () throws SQLException {
+
+        ArrayList<String[]> manufacturers = new ArrayList<>();
+
+        String sql = "Select * FROM manufacturers";
+
+        try (Connection conn = DriverManager.getConnection(URL);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                // Lagra tillverkar-ID och namn som en array med två element
+                String[] manufacturer = {
+                        String.valueOf(rs.getInt("manufacturer_id")),
+                        rs.getString("name")
+                };
+
+                manufacturers.add(manufacturer);
+            }
+        }
+
+        return manufacturers;
+    }
+
 }
