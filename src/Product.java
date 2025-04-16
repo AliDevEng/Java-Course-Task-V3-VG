@@ -24,6 +24,12 @@ public class Product {
         this.product_id = product_id;
     }
 
+    public Product(String name, double price, int stock_quantity) {
+        this.name = name;
+        this.price = price;
+        this.stock_quantity = stock_quantity;
+    }
+
     // 24. Metod för att presentera produkten
     public void display() {
         System.out.println
@@ -77,5 +83,15 @@ public class Product {
 
     public void setStock_quantity(int stock_quantity) {
         this.stock_quantity = stock_quantity;
+    }
+
+    // 41. tpString-metod för att visa produkten som string (4235@178956)
+    @Override
+    public String toString() {
+        return "Product{" +
+                "name='" + name + '\'' +
+                ", price=" + price +
+                ", quantity=" + stock_quantity +
+                '}';
     }
 }

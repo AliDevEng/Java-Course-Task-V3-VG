@@ -4,10 +4,22 @@
  */
 
 import java.sql.SQLException;
+import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws SQLException {
+
+       // Scanner scanner = new Scanner(System.in);
+
+        //System.out.println("Ange din email: ");
+        //String email = scanner.nextLine();
+        //System.out.println("Ange ditt lösenord: ");
+        //String password = scanner.nextLine();
+
+        //Customer loggedInCustomer = customerRepository.login(email, password);
+
+
         // 1. Skapa en instans av CustomerController
         CustomerController customerController = new CustomerController();
         ProductController productController = new ProductController();
