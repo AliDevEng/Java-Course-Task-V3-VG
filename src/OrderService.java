@@ -36,15 +36,21 @@ public class OrderService {
     public ArrayList<Order> getOrderItemsByOrderId(int orderId) throws SQLException {
         System.out.println("OrderService hämtar orderdetaljer för order med ID: " + orderId);
 
-        // Kontroll av kund-ID
+        // Kontroll av order-ID
         if (orderId <= 0) {
             System.out.println("ID måste vara större än 0");
             return new ArrayList<>();
         }
 
         // Kontrollera om kunden finns
-        if (!customerExists(orderId)) {
+        /*if (!customerExists(orderId)) {
             System.out.println("Kunde inte hitta kunden med ID: " + orderId);
+            return new ArrayList<>();
+        }*/
+
+        // Kontrollera om ordern finns
+        if (!orderExists(orderId)) {
+            System.out.println("Kunde inte hitta ordern med ID: " + orderId);
             return new ArrayList<>();
         }
 
