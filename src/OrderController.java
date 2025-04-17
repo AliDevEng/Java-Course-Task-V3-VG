@@ -205,8 +205,8 @@ public class OrderController {
             }
 
             System.out.println("\nTillgängliga produkter:");
-            System.out.println("ID\tNamn\t\tPris\tLagersaldo");
-            System.out.println("------------------------------------------");
+            System.out.println("ID\tNamn\t\tPris\tLagersaldo\tBeskrivning");
+            System.out.println("-----------------------------------------------------------");
 
             for (Product product : products) {
                 System.out.printf("%d\t%-15s\t%.2f kr\t%d%n",
@@ -230,7 +230,7 @@ public class OrderController {
                 }
 
                 // Hämta kvantitet från användaren
-                System.out.print("Ange antal: ");
+                System.out.print("Ange antal (max " + product.getStock_quantity() + "): ");
                 int quantity = Integer.parseInt(scanner.nextLine());
 
                 if (quantity <= 0) {
@@ -271,7 +271,7 @@ public class OrderController {
             }
 
         } catch (NumberFormatException e) {
-            System.out.println("Ogiltigt format. Ange numeriska värden för ID och antal.");
+            System.out.println("Fel format. Ange korrekta värden för ID och antal.");
         } catch (SQLException e) {
             System.out.println("Ett fel uppstod vid tillägg av produkter: " + e.getMessage());
             throw e;

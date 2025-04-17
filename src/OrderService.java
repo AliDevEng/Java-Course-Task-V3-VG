@@ -118,41 +118,50 @@ public class OrderService {
 
     // 80. Metod för att lägga till en produkt i en order
     public boolean addProductToOrder(int orderId, int productId, int quantity) throws SQLException {
-        System.out.println("OrderService lägger till produkt i order");
+        System.out.println("OrderService validerar och lägger till produkt i order");
 
-
-        // Validering av order-ID
+        // Grundläggande validering av indata
         if (orderId <= 0) {
-            System.out.println("Fel! ID måste vara större än 0");
+            System.out.println("Ogiltigt order-ID: ID måste vara större än 0");
             return false;
         }
 
+        if (productId <= 0) {
+            System.out.println("Ogiltigt produkt-ID: ID måste vara större än 0");
+            return false;
+        }
 
-        // Validera order
+        if (quantity <= 0) {
+            System.out.println("Ogiltig kvantitet: Antalet måste vara större än 0");
+            return false;
+        }
+
+        // Validera ordern
         if (!orderExists(orderId)) {
             System.out.println("Ordern med ID " + orderId + " hittades inte.");
             return false;
         }
 
-
-        // Validera kvantitet
-        if (quantity <= 0) {
-            System.out.println("Fel värde! Antalet måste vara större än 0");
-            return false;
-        }
-
-
-        // Hämta produkten för att få aktuellt pris
+        // Hämta produkten för att få aktuellt pris och kontrollera lager
         Product product = productRepository.getProductById(productId);
         if (product == null) {
             System.out.println("Produkten med ID " + productId + " hittades inte.");
             return false;
         }
 
-        // Validera att det finns tillräckligt många produkter i lager
-        if (product.getStock_quantity() < quantity) {
-            System.out.println("Det finns inte tillräckligt många av produkten i lager. Tillgängligt: " +
-                    product.getStock_quantity());
+        // ========102. Särskild validering av lagersaldo========
+
+        // Kontrollera om produkten redan finns i ordern för att hantera ackumulerad kvantitet
+        int currentOrderQuantity = getCurrentOrderQuantity(orderId, productId);
+
+
+        // Validera att det finns tillräckligt många produkter i lager (inklusive befintlig kvantitet i ordern)
+        if (product.getStock_quantity() < (quantity + currentOrderQuantity)) {
+            System.out.println("Observera!!! Otillräckligt lagersaldo.");
+            System.out.println("Tillgänglig just nu: " + product.getStock_quantity());
+            System.out.println("Redan i order: " + currentOrderQuantity);
+            System.out.println("Försöker lägga till: " + quantity);
+            System.out.println("Total mängd som behövs: " + (quantity + currentOrderQuantity));
             return false;
         }
 
@@ -166,6 +175,20 @@ public class OrderService {
         }
 
         return success;
+    }
+
+    // 103. Ny hjälpmetod för att hämta aktuell kvantitet av en produkt i en order
+    private int getCurrentOrderQuantity(int orderId, int productId) throws SQLException {
+        int currentQuantity = 0;
+
+        ArrayList<Order> orderItems = getOrderItemsByOrderId(orderId);
+        for (Order item : orderItems) {
+            if (item.getProduct_id() == productId) {
+                currentQuantity += item.getQuantity();
+            }
+        }
+
+        return currentQuantity;
     }
 
 }
