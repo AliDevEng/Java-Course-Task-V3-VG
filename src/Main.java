@@ -29,6 +29,11 @@ public class Main {
         // 30. Visa huvudmeny och hantera valet
         showMainMenu(customerController, productController, orderController);
 
+
+        // Jag hade problem att stänga menyn så använde följande:
+        // System.out.println("Programmet avslutas nu!");
+        System.exit(0);
+
         try {
             // 2. Starta menyhanteringen
             customerController.runMenu();
@@ -79,7 +84,7 @@ public class Main {
                     // Avsluta programmet
                     System.out.println("Programmet avslutas nu!");
                     running = false;
-                    break;
+                    return;
 
                 default:
                     System.out.println("Ej godtagbart val. Försök igen!");

@@ -46,7 +46,7 @@ public class ProductController {
                 break;
 
             case "3":
-                // 40. Sök årodukter efter kategor
+                // 40. Sök produkter efter kategor
                 System.out.println("Ange kategori: ");
                 String categoryName = scanner.nextLine();
                 productService.getProductsByCategoryName(categoryName);
@@ -69,7 +69,8 @@ public class ProductController {
 
             case "0":
                 // Återgå till huvudmeny
-                return;
+                break;
+
             default:
                 System.out.println("Ogilitig val! Försök igen.");
                 break;
@@ -77,11 +78,12 @@ public class ProductController {
 
         // Anrop för att visa meny igen
         runMenu();
-        }
+    }
 
 
-        // 29. Metod för att visa alla produkter
-        private void showAllProducts () throws SQLException {
+
+    // 29. Metod för att visa alla produkter
+    private void showAllProducts () throws SQLException {
 
             try {
                 ArrayList<Product> products = productService.getAllProducts();

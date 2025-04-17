@@ -32,11 +32,26 @@ public class ProductService {
 
     // 38. Metod för att hämta produkt med specifikt ID
     public Product getProductById(int id) throws SQLException {
+
+        // Validering av produkt-ID
+        if (id <= 0) {
+            System.out.println("Fel produkt-ID! ID måste vara större än 0");
+            return null;
+        }
+
         return productRepository.getProductById(id);
     }
 
     // 39. Metod för att söka produkter på kategori
     public void getProductsByCategoryName(String categoryName) throws SQLException {
+
+        // Validera kategori
+        if (categoryName == null || categoryName.trim().isEmpty()) {
+            System.out.println("Fel kategorinamn! Kategorinamn inte kan vara tomt");
+            return;
+        }
+
+
         ArrayList<Product> products = productRepository.getProductsByCategoryName(categoryName);
         for (Product p : products){
             System.out.println(p.toString());
@@ -48,11 +63,19 @@ public class ProductService {
     public boolean updatePrice(int productId, double newPrice) throws SQLException {
         System.out.println("ProductService uppdaterar pris för produkt med ID: " + productId);
 
+        // Validera produkt-ID
+        if (productId <= 0) {
+            System.out.println("Ogiltigt produkt-ID: ID måste vara större än 0");
+            return false;
+        }
+
+
         // Validering så att priset är positivt
         if (newPrice <= 0) {
             System.out.println("Priset måste vara större än 0");
             return false;
         }
+
 
         return productRepository.updatePrice(productId, newPrice);
     }
@@ -107,6 +130,11 @@ public class ProductService {
 
         if (stockQuantity < 0) {
             System.out.println("Lagersaldo kan inte vara negativt");
+            return false;
+        }
+
+        if (manufacturerId <= 0) {
+            System.out.println("ID måste vara större än 0");
             return false;
         }
 

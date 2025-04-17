@@ -105,4 +105,68 @@ public class OrderRepository {
             }
         }
     }
+
+    // 75. Metod för att lägga till en produkt i en order
+    public boolean
+        addProductToOrder(int orderId, int productId, int quantity, double unitPrice) throws SQLException {
+        String sql = "INSERT INTO orders_products (order_id, product_id, quantity, unit_price) VALUES (?, ?, ?, ?)";
+
+        try (Connection conn = DriverManager.getConnection(URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, orderId);
+            pstmt.setInt(2, productId);
+            pstmt.setInt(3, quantity);
+            pstmt.setDouble(4, unitPrice);
+
+            int affectedRows = pstmt.executeUpdate();
+            return affectedRows > 0;
+        }
+    }
+
+    // 76. Metod för att kontrollera om en order existerar
+    public boolean orderExists(int orderId) throws SQLException {
+        String sql = "SELECT 1 FROM orders WHERE order_id = ?";
+
+        try (Connection conn = DriverManager.getConnection(URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, orderId);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                return rs.next(); // Returnera true om ordern finns
+            }
+        }
+    }
+
+    // 77. Metod för att hämta alla ordrar (för att visa i en lista)
+    public ArrayList<Order> getAllOrders() throws SQLException {
+        ArrayList<Order> orders = new ArrayList<>();
+
+        String sql =
+                "SELECT o.*, c.name as customer_name " +
+                "FROM orders o " +
+                "JOIN customers c ON o.customer_id = c.customer_id " +
+                "ORDER BY o.order_date DESC";
+
+        try (Connection conn = DriverManager.getConnection(URL);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                Order order = new Order(
+                        rs.getInt("order_id"),
+                        rs.getInt("customer_id"),
+                        rs.getString("order_date"),
+                        rs.getString("customer_name")
+                );
+
+                orders.add(order);
+            }
+        }
+
+        return orders;
+    }
+
+
 }
