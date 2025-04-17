@@ -20,6 +20,7 @@ public class OrderController {
         // Visa ordermenyalternativ
         System.out.println(" == ORDERMENY == ");
         System.out.println("1. Se orderhistorik för en kund");
+        System.out.println("2. Lägga en order");
         System.out.println("0. Återgå till huvudmenyn");
 
         // Läs användarens val
@@ -31,9 +32,16 @@ public class OrderController {
                 // 69. Visa orderhistorik för en kund
                 showOrderHistoryForCustomer(scanner);
                 break;
+
+            case "2":
+                // 73. Skapa en ny order
+                createNewOrder(scanner);
+                break;
+
             case "0":
                 // Återgå till huvudmenyn
                 return;
+
             default:
                 System.out.println("Ogiltigt val. Försök igen.");
                 break;
@@ -108,6 +116,46 @@ public class OrderController {
             System.out.println("Ogiltigt format. Ange ett numeriskt värde för kund-ID.");
         } catch (SQLException e) {
             System.out.println("Ett fel uppstod vid hämtning av orderhistorik: " + e.getMessage());
+            throw e;
+        }
+    }
+
+    // 74. Metod för att skapa en ny order
+    private void createNewOrder(Scanner scanner) throws SQLException {
+        System.out.println("=== SKAPA NY ORDER ===");
+
+        try {
+            // Visa alla kunder så att användaren kan välja en
+            ArrayList<Customer> customers = customerService.getAllCustomers();
+
+            if (customers.isEmpty()) {
+                System.out.println("Det finns inga kunder i systemet. Kan inte skapa en order.");
+                return;
+            }
+
+            System.out.println("Tillgängliga kunder:");
+            for (Customer customer : customers) {
+                System.out.println(customer.getCustomerId() + ". " + customer.getName());
+            }
+
+            // Hämta kund-ID från användaren
+            System.out.print("Välj kund (ange ID): ");
+            int customerId = Integer.parseInt(scanner.nextLine());
+
+            // Skapa ordern
+            int orderId = orderService.createOrder(customerId);
+
+            if (orderId > 0) {
+                System.out.println("Order skapad med ID: " + orderId);
+                System.out.println("Du kan nu lägga till produkter i ordern genom att välja 'Lägga till produkter i order' i ordermenyn.");
+            } else {
+                System.out.println("Det gick inte att skapa ordern.");
+            }
+
+        } catch (NumberFormatException e) {
+            System.out.println("Ogiltigt format. Ange ett numeriskt värde för kund-ID.");
+        } catch (SQLException e) {
+            System.out.println("Ett fel uppstod vid skapande av order: " + e.getMessage());
             throw e;
         }
     }

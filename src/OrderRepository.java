@@ -80,4 +80,29 @@ public class OrderRepository {
 
         return orderItems;
     }
+
+    // 71. Metod för att skapa en ny order
+    public int createOrder(int customerId) throws SQLException {
+        String sql = "INSERT INTO orders (customer_id, order_date) VALUES (?, CURRENT_TIMESTAMP)";
+
+        try (Connection conn = DriverManager.getConnection(URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            pstmt.setInt(1, customerId);
+
+            int affectedRows = pstmt.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Skapande av order misslyckades, inga rader påverkades.");
+            }
+
+            try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    return generatedKeys.getInt(1); // Returnera det nya order-ID:t
+                } else {
+                    throw new SQLException("Skapande av order misslyckades, inget ID erhölls.");
+                }
+            }
+        }
+    }
 }

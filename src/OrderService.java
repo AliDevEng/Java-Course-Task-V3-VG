@@ -38,4 +38,20 @@ public class OrderService {
         }
         return total;
     }
+
+
+    // 72. Metod för att skapa en ny order
+    public int createOrder(int customerId) throws SQLException {
+        System.out.println("OrderService skapar en ny order för kund med ID: " + customerId);
+
+        // Validera att kunden finns
+        if (!customerExists(customerId)) {
+            System.out.println("Kunden med ID " + customerId + " hittades inte.");
+            return -1; // Returnera -1 för att indikera ett fel
+        }
+
+        return orderRepository.createOrder(customerId);
+    }
+
+
 }
