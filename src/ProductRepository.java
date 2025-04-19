@@ -133,9 +133,23 @@ public class ProductRepository {
             pstmt.setDouble(1, newPrice);
             pstmt.setInt(2, productId);
 
+            try {
+
             int rowsAffected = pstmt.executeUpdate();
             return rowsAffected > 0;
+
+
+            }   catch (SQLException e) {
+                System.err.println("SQL-fel vid uppdatering av pris: " + e.getMessage());
+                System.err.println("SQL-felkod: " + e.getErrorCode());
+                throw new SQLException("Kunde inte uppdatera produktens pris: " + e.getMessage(), e);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("SQL-fel vid förberedelse av prisuppdatering: " + e.getMessage());
+            throw new SQLException("Databasfel vid prisuppdatering: " + e.getMessage(), e);
         }
+
 
     }
 

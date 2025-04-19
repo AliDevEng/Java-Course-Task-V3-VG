@@ -119,23 +119,24 @@ public class OrderRepository {
             pstmt.setInt(3, quantity);
             pstmt.setDouble(4, unitPrice);
 
-            int affectedRows = pstmt.executeUpdate();
-            return affectedRows > 0;
-        }
-    }
+            try {
+                int affectedRows = pstmt.executeUpdate();
+                return affectedRows > 0;
+            } catch (SQLException e) {
+                System.err.println("SQL-fel vid tillägg av produkt till order: " + e.getMessage());
+                System.err.println("SQL-felkod: " + e.getErrorCode());
 
-    // 76. Metod för att kontrollera om en order existerar
-    public boolean orderExists(int orderId) throws SQLException {
-        String sql = "SELECT 1 FROM orders WHERE order_id = ?";
-
-        try (Connection conn = DriverManager.getConnection(URL);
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setInt(1, orderId);
-
-            try (ResultSet rs = pstmt.executeQuery()) {
-                return rs.next(); // Returnera true om ordern finns
+                if (e.getMessage().contains("foreign key constraint")) {
+                    throw new SQLException("Kunde inte lägga till produkten i ordern: Produkt eller order existerar inte", e);
+                } else if (e.getMessage().contains("UNIQUE constraint")) {
+                    throw new SQLException("Denna produkt finns redan i ordern. Använd uppdatering istället.", e);
+                } else {
+                    throw new SQLException("Kunde inte lägga till produkten i ordern: " + e.getMessage(), e);
+                }
             }
+        } catch (SQLException e) {
+            System.err.println("SQL-fel vid förberedelse av produkt-tillägg: " + e.getMessage());
+            throw new SQLException("Databasfel vid tillägg av produkt till order: " + e.getMessage(), e);
         }
     }
 
@@ -169,4 +170,24 @@ public class OrderRepository {
     }
 
 
+    public boolean orderExists(int orderId) throws SQLException {
+
+        String sql = "SELECT 1 FROM orders WHERE order_id = ?";
+
+        try (Connection conn = DriverManager.getConnection(URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, orderId);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                return rs.next(); // Returnera true om ordern finns
+            } catch (SQLException e) {
+                System.err.println("SQL-fel vid kontroll om order existerar: " + e.getMessage());
+                throw new SQLException("Kunde inte kontrollera om ordern existerar: " + e.getMessage(), e);
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL-fel vid förberedelse av kontroll: " + e.getMessage());
+            throw new SQLException("Databasfel vid kontroll av order: " + e.getMessage(), e);
+        }
+    }
 }

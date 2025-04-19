@@ -28,6 +28,10 @@ public class CustomerRepository {
 
                 customers.add(customer);
             }
+        } catch (SQLException e) {
+            System.err.println("SQL-fel vid hämtning av alla kunder: " + e.getMessage());
+            System.err.println("SQL-felkod: " + e.getErrorCode());
+            throw new SQLException("Kunde inte hämta kundlistan från databasen: " + e.getMessage(), e);
         }
         return customers;
     }
@@ -45,33 +49,80 @@ public class CustomerRepository {
                 pstmt.setString(3, password); // Korrigerat från 5 till 3
 
                 pstmt.execute();
+            } catch (SQLException e) {
+                System.err.println("SQL-fel vid tillägg av ny kund: " + e.getMessage());
+                System.err.println("SQL-felkod: " + e.getErrorCode());
+
+
+                // Mer specifik felmeddelande
+                if (e.getMessage().contains("UNIQUE constraint failed")) {
+                    throw new SQLException("En kund med denna Email finns redan", e);
+                } else {
+                    throw new SQLException("Kunde inte lägga till kunden i databasen: " + e.getMessage(), e );
+                }
             }
         }
 
         // 12. Metod för att uppdatera en kunds e-postadress
-        public boolean updateEmail (int customerId, String email) throws SQLException {
+        public boolean updateEmail(int customerId, String email) throws SQLException {
+
             String sql = "UPDATE customers SET email = ? WHERE customer_id = ?";
+
             try (Connection conn = DriverManager.getConnection(URL);
-                 PreparedStatement pstmt = conn.prepareStatement(sql) ) {
+                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-                pstmt.setString(1,email);
-                pstmt.setInt(2,customerId);
+                pstmt.setString(1, email);
+                pstmt.setInt(2, customerId);
 
-                return pstmt.executeUpdate() > 0;
+                try {
+                    int rowsAffected = pstmt.executeUpdate();
+                    return rowsAffected > 0;
+
+                } catch (SQLException e) {
+                    System.err.println("SQL-fel vid uppdatering av Email: " + e.getMessage());
+                    System.err.println("SQL-felkod: " + e.getErrorCode());
+
+                    if (e.getMessage().contains("UNIQUE constraint failed")) {
+                        throw new SQLException("En annan kund använder redan denna Email", e);
+                    } else {
+                        throw new SQLException("Kunde inte uppdatera kundens Email: " + e.getMessage(), e);
+                    }
+                }
+            } catch (SQLException e) {
+                System.err.println("SQL-fel vid förberedelse av uppdatering: " + e.getMessage());
+                throw new SQLException("Databasfel vid uppdatering av kundens Email: " + e.getMessage(), e);
             }
-
         }
 
         // 15. Metod för att ta bort en kund från databasen
-        public boolean deleteCustomer (int customerId) throws SQLException {
+        public boolean deleteCustomer (int customerId ) throws SQLException {
+
             String sql = "DELETE FROM customers WHERE customer_id = ?";
+
+
             try (Connection conn = DriverManager.getConnection(URL);
-                 PreparedStatement pstmt = conn.prepareStatement(sql) ) {
+                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-                pstmt.setInt(1,customerId);
+                pstmt.setInt(1, customerId);
 
-                return pstmt.executeUpdate() > 0;
+                try {
+                    int rowsAffected = pstmt.executeUpdate();
+                    return rowsAffected > 0;
 
+                } catch (SQLException e) {
+                    System.err.println("SQL-fel vid borttagning av kund: " + e.getMessage());
+                    System.err.println("SQL-felkod: " + e.getErrorCode());
+
+                    if (e.getMessage().contains("foreign key constraint")) {
+                        throw new SQLException("Kunden kan inte tas bort eftersom den har kopplade ordrar", e);
+                    } else {
+                        throw new SQLException("Kunde inte ta bort kunden från databasen: " + e.getMessage(), e);
+                    }
+                }
+
+            } catch (SQLException e) {
+                System.err.println("SQL-fel vid förberedelse av borttagning: " + e.getMessage());
+                throw new SQLException("Databasfel vid borttagning av kund: " + e.getMessage(), e);
             }
         }
 
@@ -98,8 +149,16 @@ public class CustomerRepository {
                 } else {
                     // Returnera null om ingen kund hittades med det angivna ID:t
                     return null;
+
                 }
+
+            } catch (SQLException e) {
+                System.err.println("SQL-fel vid hämtning av kunddata: " + e.getMessage());
+                throw new SQLException("Kunde inte läsa kunddata: " + e.getMessage(), e);
             }
+        } catch (SQLException e) {
+            System.err.println("SQL-fel vid förberedelse av kundhämtning: " + e.getMessage());
+            throw new SQLException("Databasefel vid sökning efter kund: " + e.getMessage(), e);
         }
     }
 }
