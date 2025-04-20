@@ -19,6 +19,9 @@ public class CustomerController {
     public void runMenu() throws SQLException {
         Scanner scanner = new Scanner(System.in);
 
+        // Skapa tom rad för bättre läsbarhet
+        System.out.println();
+
         try {
             // Visa meny
             System.out.println("== Kundmeny ==");
@@ -27,10 +30,13 @@ public class CustomerController {
             System.out.println("3. Lägg till ny kund");
             System.out.println("4. Uppdatera email");
             System.out.println("5. Ta bort kund");
-            System.out.println("0. Avsluta");
+            System.out.println("0. Återgå till huvudmeny");
+            System.out.print("Ange dit val här: ");
 
             // Läs användarens val
             String select = scanner.nextLine();
+
+            System.out.println();
 
             // Hantera användarens val genom en switch-sats
             switch (select) {

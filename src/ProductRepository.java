@@ -110,9 +110,22 @@ public class ProductRepository {
 
             pstmt.setString(1, "%" + categoryName + "%");
             ResultSet rs = pstmt.executeQuery();
-            if (!rs.next()) {
-                return null;
+
+            boolean hasResults = rs.next();
+            if (!hasResults) {
+                // Returnera tom lista istället för null
+                return products;
             }
+
+            // Om vi har resultat, lägg till första raden
+            if (hasResults) {
+                Product product = new Product(rs.getString("name"),
+                        rs.getDouble("price"),
+                        rs.getInt("stock_quantity"));
+                products.add(product);
+            }
+
+
             while (rs.next()) {
                 Product product = new Product(rs.getString("name"),
                         rs.getDouble("price"),

@@ -16,6 +16,8 @@ public class ProductController {
     public void runMenu () throws SQLException {
         Scanner scanner = new Scanner(System.in);
 
+        // JAg lägger dessa för att skapa tomma rader
+        System.out.println();
 
         // Visa meny
         System.out.println("== Produktmeny ==");
@@ -26,10 +28,13 @@ public class ProductController {
         System.out.println("5. Uppdatera lagersaldo");
         System.out.println("6. Lägg till ny produkt");
         System.out.println("0. Återgå till huvudmeny");
+        System.out.print("Ange dit val här: ");
 
 
         // Läs användarens val
         String select = scanner.nextLine();
+
+        System.out.println();
 
 
         // Switch-sats för att hantera användarens val
@@ -69,15 +74,17 @@ public class ProductController {
 
             case "0":
                 // Återgå till huvudmeny
-                break;
+                return;
 
             default:
-                System.out.println("Ogilitig val! Försök igen.");
+                System.out.println("Felaktigt val! Försök igen.");
                 break;
         }
 
         // Anrop för att visa meny igen
+        if (!select.equals("0")) {
         runMenu();
+        }
     }
 
 

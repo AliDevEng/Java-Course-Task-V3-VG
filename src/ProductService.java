@@ -52,9 +52,17 @@ public class ProductService {
         }
 
 
-        ArrayList<Product> products = productRepository.getProductsByCategoryName(categoryName);
-        for (Product p : products){
-            System.out.println(p.toString());
+        ArrayList<Product> products = productRepository.getProductsByCategoryName(categoryName.trim());
+
+
+        // Kontrollera om listan är tom, inte null
+        if (products.isEmpty()) {
+            System.out.println("Inga produkter hittades i kategori: " + categoryName);
+        } else {
+            System.out.println("Produkter i kategori '" + categoryName + "':");
+            for (Product p : products){
+                System.out.println(p.toString());
+            }
         }
 
     }

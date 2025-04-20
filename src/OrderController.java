@@ -18,15 +18,21 @@ public class OrderController {
     public void runMenu() throws SQLException {
         Scanner scanner = new Scanner(System.in);
 
+        // Tom rad för bättre läsbarhet
+        System.out.println();
+
         // Visa ordermenyalternativ
         System.out.println(" == ORDERMENY == ");
         System.out.println("1. Se orderhistorik för en kund");
         System.out.println("2. Lägga en order");
         System.out.println("3. Lägga till produkter i order");
         System.out.println("0. Återgå till huvudmenyn");
+        System.out.print("Ange dit val här: ");
 
         // Läs användarens val
         String select = scanner.nextLine();
+
+        System.out.println();
 
         // Hantera användarens val genom en switch-sats
         switch (select) {

@@ -161,5 +161,35 @@ public class CustomerRepository {
             throw new SQLException("Databasefel vid sökning efter kund: " + e.getMessage(), e);
         }
     }
+
+
+    public Customer loginCustomer (String email, String password) throws SQLException {
+
+        String sql = "SELECT * FROM customers WHERE email = ? AND password = ?";
+
+        try (Connection conn = DriverManager.getConnection(URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, email);
+            pstmt.setString(2, password);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                // Om en kund hittades, returnera den
+                return new Customer(
+                        rs.getInt("customer_id"),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        rs.getString("phone"),
+                        rs.getString("address"),
+                        rs.getString("password")
+                );
+            }
+        }
+
+        // Om ingen kund hittas, returnera null
+        return null;
+    }
 }
 
