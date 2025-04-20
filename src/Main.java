@@ -17,6 +17,7 @@ public class Main {
         //System.out.println("Ange ditt lösenord: ");
         //String password = scanner.nextLine();
 
+
         //Customer loggedInCustomer = customerRepository.login(email, password);
 
 
