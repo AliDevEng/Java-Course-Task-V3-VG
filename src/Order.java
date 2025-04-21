@@ -16,7 +16,7 @@ public class Order {
     private double unit_price;
     private int product_id;
 
-    // 56. Konstruktor för en order utan orderrader
+    // 56. Konstruktor för en order
     public Order(int order_id, int customer_id, String order_date) {
         this.order_id = order_id;
         this.customer_id = customer_id;
