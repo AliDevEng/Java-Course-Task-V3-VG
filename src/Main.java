@@ -10,22 +10,18 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) throws SQLException {
 
-       // Scanner scanner = new Scanner(System.in);
-
-        //System.out.println("Ange din email: ");
-        //String email = scanner.nextLine();
-        //System.out.println("Ange ditt lösenord: ");
-        //String password = scanner.nextLine();
-
-
-        //Customer loggedInCustomer = customerRepository.login(email, password);
-
 
         // 1. Skapa en instans av CustomerController
         CustomerController customerController = new CustomerController();
         ProductController productController = new ProductController();
         OrderController orderController = new OrderController();
+        CustomerRepository customerRepository = new CustomerRepository();
 
+        // Skapa en instans av UserSession
+        UserSession userSession = UserSession.getInstance();
+
+        // Hantering av inloggning
+        handleLogin (customerRepository);
 
         // 30. Visa huvudmeny och hantera valet
         showMainMenu(customerController, productController, orderController);
@@ -46,39 +42,113 @@ public class Main {
     }
 
 
+    private static void handleLogin(CustomerRepository customerRepository) throws SQLException {
+        Scanner scanner = new Scanner(System.in);
+
+        UserSession userSession = UserSession.getInstance();
+
+        System.out.println("=== VÄLKOMMEN TILL WEBSHOP ===");
+        System.out.println("Vill du logga in? (ja/nej)");
+        String answer = scanner.nextLine().toLowerCase();
+
+        if (answer.equals("ja") || answer.equals("j")) {
+            boolean continueLogin = true;
+
+            while (continueLogin) {
+                System.out.print("Ange din email: ");
+                String email = scanner.nextLine();
+                System.out.print("Ange ditt lösenord: ");
+                String password = scanner.nextLine();
+
+                try {
+                    Customer loggedInCustomer = customerRepository.loginCustomer(email, password);
+
+                    if (loggedInCustomer != null) {
+                        // Inloggningen lyckades
+                        userSession.setLoggedInCustomer(loggedInCustomer);
+                        System.out.println("Inloggning lyckades!");
+                        loggedInCustomer.displayInfo();
+                        return;  // Avsluta metoden om inloggningen lyckas
+                    } else {
+                        // Inloggningen misslyckades
+                        System.out.println("Felaktig email eller password!");
+                        System.out.println("Vill du försöka igen? (Ja/Nej)");
+                        String retry = scanner.nextLine().toLowerCase();
+
+                        if (!(retry.equals("ja") || retry.equals("j"))) {
+                            continueLogin = false;  // Avsluta loopen om användaren inte vill försöka igen
+                        }
+                    }
+                } catch (SQLException e) {
+                    System.out.println("Fel vid inloggning: " + e.getMessage());
+                    // Avsluta loppen om användare inte vill försöka igen
+                    continueLogin = false;
+                }
+            }
+        } else {
+            System.out.println("Fortsätter utan inloggning.");
+        }
+    }
+
     // 31. Metod för att visa huvudmeny och dirigera till rätt controller
-    private static void showMainMenu
-                                    (CustomerController customerController,
-                                     ProductController productController,
-                                     OrderController orderController) throws SQLException {
+    private static void showMainMenu(
+            CustomerController customerController,
+            ProductController productController,
+            OrderController orderController) throws SQLException {
 
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
 
         while (running) {
+            // Hämta UserSession-instansen
+            UserSession session = UserSession.getInstance();
+
+            // Använd session istället för userSession
+            if (session.isLoggedIn()) {
+                Customer loggedInCustomer = session.getLoggedInCustomer();
+                System.out.println("\n=== INLOGGAD SOM: " + loggedInCustomer.getName() + " ===");
+            }
+
             System.out.println("\n=== WEBSHOP HUVUDMENY ===");
             System.out.println("1. Kundhantering");
             System.out.println("2. Produkthantering");
             System.out.println("3. Orderhantering");
+
+            // Visa olika alternativ baserat på inloggningsstatus
+            if (session.isLoggedIn()) {
+                System.out.println("4. Logga ut");
+            } else {
+                System.out.println("4. Logga in");
+            }
+
             System.out.println("0. Avsluta programmet");
-            System.out.print("Ange dit val här: ");
+            System.out.print("Ange ditt val här: ");
 
             String choice = scanner.nextLine();
 
             switch (choice) {
                 case "1":
-                    // Gå till kundhanterings meny
+                    // Gå till kundhanteringsmeny
                     customerController.runMenu();
                     break;
 
                 case "2":
-                    // Gå till produkthanterings meny
+                    // Gå till produkthanteringsmeny
                     productController.runMenu();
                     break;
 
                 case "3":
-                    // Gå till orderhanteringsmenyn
+                    // Gå till orderhanteringsmeny
                     orderController.runMenu();
+                    break;
+
+                case "4":
+                    // Hantera inloggning/utloggning
+                    if (session.isLoggedIn()) {
+                        session.logout();
+                    } else {
+                        handleLogin(new CustomerRepository());
+                    }
                     break;
 
                 case "0":

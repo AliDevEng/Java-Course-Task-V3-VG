@@ -163,6 +163,7 @@ public class CustomerRepository {
     }
 
 
+    // Metod för at logga in med email-password
     public Customer loginCustomer (String email, String password) throws SQLException {
 
         String sql = "SELECT * FROM customers WHERE email = ? AND password = ?";
