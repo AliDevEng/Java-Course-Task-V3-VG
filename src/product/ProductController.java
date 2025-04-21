@@ -1,7 +1,14 @@
+package product;
+
 /**
- * ProductController-klassen utgör presentationslagret för produkthantering.
+ * product.ProductController-klassen utgör presentationslagret för produkthantering.
  * Den hanterar all interaktion med användaren gällande produkter.
  */
+
+import common.UserSession;
+import customer.Customer;
+import customer.CustomerRepository;
+import order.Order;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -9,7 +16,7 @@ import java.util.Scanner;
 
 public class ProductController {
 
-    // Skapa en instans av ProductService för att kunna anropa dess metoder
+    // Skapa en instans av product.ProductService för att kunna anropa dess metoder
     ProductService productService = new ProductService();
 
     // 27. Meny för att visa produktmeny och hantera användarensval

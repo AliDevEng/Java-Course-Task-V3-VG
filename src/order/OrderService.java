@@ -1,21 +1,26 @@
-/**
- * OrderService-klassen utgör affärslogiklagret för orderhantering.
+package order; /**
+ * order.OrderService-klassen utgör affärslogiklagret för orderhantering.
  * Den fungerar som en förmedlare mellan controller och repository.
  */
+
+import customer.Customer;
+import customer.CustomerRepository;
+import product.Product;
+import product.ProductRepository;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class OrderService {
 
-    // Skapa en instans av OrderRepository för att kunna anropa dess metoder
+    // Skapa en instans av order.OrderRepository för att kunna anropa dess metoder
     OrderRepository orderRepository = new OrderRepository();
     CustomerRepository customerRepository = new CustomerRepository();
     ProductRepository productRepository = new ProductRepository();
 
     // 64. Metod för att hämta ordrar för en specifik kund
     public ArrayList<Order> getOrdersByCustomerId(int customerId) throws SQLException {
-        System.out.println("OrderService hämtar ordrar för kund med ID: " + customerId);
+        System.out.println("order.OrderService hämtar ordrar för kund med ID: " + customerId);
 
         // Kontroll av kund-ID
         if (customerId <= 0) {
@@ -34,7 +39,7 @@ public class OrderService {
 
     // 65. Metod för att hämta orderdetaljer för en specifik order
     public ArrayList<Order> getOrderItemsByOrderId(int orderId) throws SQLException {
-        System.out.println("OrderService hämtar orderdetaljer för order med ID: " + orderId);
+        System.out.println("order.OrderService hämtar orderdetaljer för order med ID: " + orderId);
 
         // Kontroll av order-ID
         if (orderId <= 0) {
@@ -81,7 +86,7 @@ public class OrderService {
 
     // 72. Metod för att skapa en ny order
     public int createOrder(int customerId) throws SQLException {
-        System.out.println("OrderService skapar en ny order för kund med ID: " + customerId);
+        System.out.println("order.OrderService skapar en ny order för kund med ID: " + customerId);
 
         // Validera kund-ID
         if (customerId <= 0) {
@@ -100,7 +105,7 @@ public class OrderService {
 
     // 78. Metod för att hämta alla ordrar
     public ArrayList<Order> getAllOrders() throws SQLException {
-        System.out.println("OrderService hämtar alla ordrar");
+        System.out.println("order.OrderService hämtar alla ordrar");
         return orderRepository.getAllOrders();
     }
 
@@ -118,7 +123,7 @@ public class OrderService {
 
     // 80. Metod för att lägga till en produkt i en order
     public boolean addProductToOrder(int orderId, int productId, int quantity) throws SQLException {
-        System.out.println("OrderService validerar och lägger till produkt i order");
+        System.out.println("order.OrderService validerar och lägger till produkt i order");
 
         // Grundläggande validering av indata
         if (orderId <= 0) {

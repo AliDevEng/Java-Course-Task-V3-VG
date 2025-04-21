@@ -1,23 +1,29 @@
 /**
  * Main-klassen är applikationens startpunkt.
- * Den skapar en instans av CustomerController och startar menyn.
+ * Den skapar en instans av customer.CustomerController och startar menyn.
  */
 
+import common.UserSession;
+import customer.Customer;
+import customer.CustomerController;
+import customer.CustomerRepository;
+import order.OrderController;
+import product.ProductController;
+
 import java.sql.SQLException;
-import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws SQLException {
 
 
-        // 1. Skapa en instans av CustomerController
+        // 1. Skapa instans
         CustomerController customerController = new CustomerController();
         ProductController productController = new ProductController();
         OrderController orderController = new OrderController();
         CustomerRepository customerRepository = new CustomerRepository();
 
-        // Skapa en instans av UserSession
+        // Skapa en instans av common.UserSession
         UserSession userSession = UserSession.getInstance();
 
         // Hantering av inloggning
@@ -100,7 +106,7 @@ public class Main {
         boolean running = true;
 
         while (running) {
-            // Hämta UserSession-instansen
+            // Hämta common.UserSession-instansen
             UserSession session = UserSession.getInstance();
 
             // Använd session istället för userSession

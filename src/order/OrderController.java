@@ -1,7 +1,13 @@
+package order;
 /**
- * OrderController-klassen utgör presentationslagret för orderhantering.
+ * order.OrderController-klassen utgör presentationslagret för orderhantering.
  * Den hanterar all interaktion med användaren gällande ordrar.
  */
+
+import customer.Customer;
+import customer.CustomerService;
+import product.Product;
+import product.ProductService;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -9,7 +15,7 @@ import java.util.Scanner;
 
 public class OrderController {
 
-    // Skapa en instans av OrderService för att kunna anropa dess metoder
+    // Skapa en instans av order.OrderService för att kunna anropa dess metoder
     OrderService orderService = new OrderService();
     CustomerService customerService = new CustomerService();
     ProductService productService = new ProductService();
@@ -105,7 +111,7 @@ public class OrderController {
             System.out.println("--------------------------------------");
 
             for (Order order : orders) {
-                System.out.println("\nOrder #" + order.getOrder_id() + " - Datum: " + order.getOrder_date());
+                System.out.println("\norder.Order #" + order.getOrder_id() + " - Datum: " + order.getOrder_date());
 
                 // Hämta orderdetaljer
                 ArrayList<Order> orderItems = orderService.getOrderItemsByOrderId(order.getOrder_id());
@@ -159,7 +165,7 @@ public class OrderController {
             int orderId = orderService.createOrder(customerId);
 
             if (orderId > 0) {
-                System.out.println("Order skapad med ID: " + orderId);
+                System.out.println("order.Order skapad med ID: " + orderId);
                 System.out.println("Du kan nu lägga till produkter i ordern genom att välja 'Lägga till produkter i order' i ordermenyn.");
             } else {
                 System.out.println("Det gick inte att skapa ordern.");

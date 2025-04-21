@@ -1,14 +1,19 @@
+package customer;
 /**
- * CustomerService-klassen utgör affärslogiklagret för kundhantering.
+ * customer.CustomerService-klassen utgör affärslogiklagret för kundhantering.
  * Den fungerar som en förmedlare mellan controller och repository.
  */
 
+import common.User;
+import common.UserSession;
+import product.Product;
+import order.Order;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 public class CustomerService {
-    // Skapa en instans av CustomerRepository för att kunna anropa dess metoder
+    // Skapa en instans av customer.CustomerRepository för att kunna anropa dess metoder
     CustomerRepository customerRepository = new CustomerRepository();
 
     // 83. Email valideringsmönster med regex
@@ -66,7 +71,7 @@ public class CustomerService {
 
     // 10. Metod för att lägga till en ny användare/kund
     public boolean insertUser(String name, String email, String password) throws SQLException {
-        System.out.println("Service skickar vidare User");
+        System.out.println("Service skickar vidare common.User");
 
         // Kontroll av namn
         if (name == null || name.trim().isEmpty()) {

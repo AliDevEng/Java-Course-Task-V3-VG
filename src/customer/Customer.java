@@ -1,5 +1,12 @@
+package customer;
+
+import common.User;
+import common.UserSession;
+import product.Product;
+import order.Order;
+
 /**
- * Customer-klassen representerar en kund i webshop-systemet.
+ * customer.Customer-klassen representerar en kund i webshop-systemet.
  * Den innehåller all information om en kund och metoder för att hantera denna information.
  */
 
@@ -19,7 +26,7 @@ public class Customer extends User {
 
     // 3. Konstruktor för att skapa ett kundobjekt med grundläggande information
     public Customer(int customerId, String name, String email) {
-        // Vi anropar User-kondtruktor
+        // Vi anropar common.User-kondtruktor
         super (customerId, name, email, null);
 
         /** this.customerId = customerId;
@@ -65,7 +72,7 @@ public class Customer extends User {
 
     // Getter- och setter-metoder för att komma åt och ändra kundens attribut
     public int getCustomerId() {
-        // getId från User-klass
+        // getId från common.User-klass
         return getId();
     }
 

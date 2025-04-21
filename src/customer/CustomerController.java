@@ -1,7 +1,16 @@
+package customer;
+
+
 /**
- * CustomerController-klassen utgör presentationslagret för kundhantering.
+ * customer.CustomerController-klassen utgör presentationslagret för kundhantering.
  * Den hanterar all interaktion med användaren genom en konsolbaserad meny.
  */
+
+
+import common.User;
+import common.UserSession;
+import product.Product;
+import order.Order;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

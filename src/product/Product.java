@@ -1,7 +1,16 @@
+package product;
+
 /**
- * Product-klassen representerar en produkt i webshop-systemet.
+ * product.Product-klassen representerar en produkt i webshop-systemet.
  * Den innehåller all information om en produkt enligt databasstrukturen.
  */
+
+
+import common.UserSession;
+import customer.Customer;
+import customer.CustomerRepository;
+import order.Order;
+
 
 public class Product {
 
@@ -88,7 +97,7 @@ public class Product {
     // 41. tpString-metod för att visa produkten som string (4235@178956)
     @Override
     public String toString() {
-        return "Product{" +
+        return "product.Product{" +
                 "name='" + name + '\'' +
                 ", price=" + price +
                 ", quantity=" + stock_quantity +

@@ -1,7 +1,13 @@
+package product;
 /**
- * ProductService-klassen utgör affärslogiklagret för produkthantering.
+ * product.ProductService-klassen utgör affärslogiklagret för produkthantering.
  * Den fungerar som en förmedlare mellan controller och repository.
  */
+
+import common.UserSession;
+import customer.Customer;
+import customer.CustomerRepository;
+import order.Order;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -13,13 +19,13 @@ public class ProductService {
 
     // 26. Metod för att hämta alla produkter
     public ArrayList<Product> getAllProducts() throws SQLException {
-        System.out.println("ProductService hämtar alla produkter från repository");
+        System.out.println("product.ProductService hämtar alla produkter från repository");
         return productRepository.getAllProducts();
     }
 
     // 33. Metod för att söka produkter efter namn
     public ArrayList<Product> getProductsByName(String searchTerm) throws SQLException {
-        System.out.println("ProductService söker produkter med namn som innehåller: " + searchTerm);
+        System.out.println("product.ProductService söker produkter med namn som innehåller: " + searchTerm);
 
         // Validera söktermen - enkel validering för att undvika tomma söktermer
         if (searchTerm == null || searchTerm.trim().isEmpty()) {
@@ -69,7 +75,7 @@ public class ProductService {
 
     // 43. Metod för att uppdatera pris på en produkt
     public boolean updatePrice(int productId, double newPrice) throws SQLException {
-        System.out.println("ProductService uppdaterar pris för produkt med ID: " + productId);
+        System.out.println("product.ProductService uppdaterar pris för produkt med ID: " + productId);
 
         // Validera produkt-ID
         if (productId <= 0) {
@@ -90,7 +96,7 @@ public class ProductService {
 
     // 47. Metod för att uppdatera lagersaldo på en produkt
     public boolean updateStockQuantity(int productId, int newQuantity) throws SQLException {
-        System.out.println("ProductService uppdaterar lagersaldo för produkt med ID: " + productId);
+        System.out.println("product.ProductService uppdaterar lagersaldo för produkt med ID: " + productId);
 
         // Validera att lagersaldot inte är negativt
         if (newQuantity < 0) {
@@ -104,7 +110,7 @@ public class ProductService {
     // 52. Metod för att visa alla tillverkare
     public void getAllManufacturers() throws SQLException {
 
-        System.out.println("ProductService hämtar alla tillverkare från repository");
+        System.out.println("product.ProductService hämtar alla tillverkare från repository");
 
         ArrayList<String[]> manufacturers = productRepository.getAllManufacturers();
 
@@ -123,7 +129,7 @@ public class ProductService {
     public boolean
     addProduct(String name, String description, double price, int stockQuantity, int manufacturerId)
             throws SQLException {
-        System.out.println("ProductService lägger till ny produkt");
+        System.out.println("product.ProductService lägger till ny produkt");
 
         // Validera produktuppgifter
         if (name == null || name.trim().isEmpty()) {

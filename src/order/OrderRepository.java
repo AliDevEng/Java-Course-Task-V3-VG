@@ -1,8 +1,13 @@
+package order;
 /**
- * OrderRepository-klassen utgör datalagret för orderhantering.
+ * order.OrderRepository-klassen utgör datalagret för orderhantering.
  * Den ansvarar för all direkt kommunikation med databasen gällande orderdata.
  */
-
+import common.UserSession;
+import customer.Customer;
+import customer.CustomerRepository;
+import product.Product;
+import product.ProductRepository;
 import java.sql.*;
 import java.util.ArrayList;
 

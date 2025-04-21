@@ -1,3 +1,7 @@
+package common;
+
+import customer.Customer;
+
 /**
  * Hanterar användarens inloggningssession
  * Singleton-mönster för att säkerställa att endas en session existerar

@@ -1,5 +1,11 @@
+package order;
+import common.UserSession;
+import customer.Customer;
+import customer.CustomerRepository;
+import product.Product;
+import product.ProductRepository;
 /**
- * Order-klassen representerar en order i webshop-systemet.
+ * order.Order-klassen representerar en order i webshop-systemet.
  * Den innehåller information om en order enligt databasstrukturen.
  */
 
@@ -121,7 +127,7 @@ public class Order {
     // 61. toString-metod för att visa en order
     @Override
     public String toString() {
-        return "Order #" + order_id + " - Datum: " + order_date +
+        return "order.Order #" + order_id + " - Datum: " + order_date +
                 (customerName != null ? " - Kund: " + customerName : "");
     }
 }

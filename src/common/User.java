@@ -1,7 +1,11 @@
+package common;
+
 /**
- * User-klassen är en basklas som representerar an användare i systemet
+ * common.User-klassen är en basklas som representerar an användare i systemet
  * Innheåller grundläggande information som är gemensamma för alla användartyper
  */
+
+import customer.Customer;
 
 public class User {
 

@@ -1,7 +1,13 @@
+package product;
 /**
- * ProductRepository-klassen utgör datalagret för produkthantering.
+ * product.ProductRepository-klassen utgör datalagret för produkthantering.
  * Den ansvarar för all direkt kommunikation med databasen gällande produktdata
  */
+
+import common.UserSession;
+import customer.Customer;
+import customer.CustomerRepository;
+import order.Order;
 
 import java.util.ArrayList;
 import java.sql.*;
