@@ -8,6 +8,8 @@ import customer.Customer;
 import customer.CustomerService;
 import product.Product;
 import product.ProductService;
+import common.UserSession;
+
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -144,35 +146,29 @@ public class OrderController {
         System.out.println("=== SKAPA NY ORDER ===");
 
         try {
-            // Visa alla kunder så att användaren kan välja en
-            ArrayList<Customer> customers = customerService.getAllCustomers();
-
-            if (customers.isEmpty()) {
-                System.out.println("Det finns inga kunder i systemet. Kan inte skapa en order.");
+            // Kontrollera om användaren är inloggad
+            UserSession session = UserSession.getInstance();
+            if (!session.isLoggedIn()) {
+                System.out.println("Du måste vara inloggad för att skapa en order.");
                 return;
             }
 
-            System.out.println("Tillgängliga kunder:");
-            for (Customer customer : customers) {
-                System.out.println(customer.getCustomerId() + ". " + customer.getName());
-            }
+            // Använd automatiskt den inloggade kundens ID
+            Customer loggedInCustomer = session.getLoggedInCustomer();
+            int customerId = loggedInCustomer.getCustomerId();
 
-            // Hämta kund-ID från användaren
-            System.out.print("Välj kund (ange ID): ");
-            int customerId = Integer.parseInt(scanner.nextLine());
+            System.out.println("Skapar order för inloggad kund: " + loggedInCustomer.getName());
 
             // Skapa ordern
             int orderId = orderService.createOrder(customerId);
 
             if (orderId > 0) {
-                System.out.println("order.Order skapad med ID: " + orderId);
+                System.out.println("Order skapad med ID: " + orderId);
                 System.out.println("Du kan nu lägga till produkter i ordern genom att välja 'Lägga till produkter i order' i ordermenyn.");
             } else {
                 System.out.println("Det gick inte att skapa ordern.");
             }
 
-        } catch (NumberFormatException e) {
-            System.out.println("Ogiltigt format. Ange ett numeriskt värde för kund-ID.");
         } catch (SQLException e) {
             System.out.println("Ett fel uppstod vid skapande av order: " + e.getMessage());
             throw e;
