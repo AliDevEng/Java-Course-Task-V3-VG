@@ -1,6 +1,5 @@
 /**
  * Main-klassen är applikationens startpunkt.
- * Den skapar en instans av customer.CustomerController och startar menyn.
  */
 
 import common.UserSession;
