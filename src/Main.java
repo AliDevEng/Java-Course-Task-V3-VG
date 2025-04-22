@@ -8,6 +8,8 @@ import customer.CustomerController;
 import customer.CustomerRepository;
 import order.OrderController;
 import product.ProductController;
+import shoppingcart.ShoppingCartController;
+
 
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -21,15 +23,16 @@ public class Main {
         ProductController productController = new ProductController();
         OrderController orderController = new OrderController();
         CustomerRepository customerRepository = new CustomerRepository();
+        ShoppingCartController cartController = new ShoppingCartController();
 
-        // Skapa en instans av common.UserSession
+        // Skapa en instans 
         UserSession userSession = UserSession.getInstance();
 
         // Hantering av inloggning
         handleLogin (customerRepository);
 
         // 30. Visa huvudmeny och hantera valet
-        showMainMenu(customerController, productController, orderController);
+        showMainMenu(customerController, productController, orderController, cartController);
 
 
         // Jag hade problem att stänga menyn så använde följande:
@@ -99,7 +102,8 @@ public class Main {
     private static void showMainMenu(
             CustomerController customerController,
             ProductController productController,
-            OrderController orderController) throws SQLException {
+            OrderController orderController,
+            ShoppingCartController cartController) throws SQLException {
 
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
@@ -119,9 +123,10 @@ public class Main {
             System.out.println("2. Produkthantering");
             System.out.println("3. Orderhantering");
 
-            // Visa olika alternativ baserat på inloggningsstatus
+            // Visa olika menyalternativ baserat på inloggningsstatus
             if (session.isLoggedIn()) {
                 System.out.println("4. Logga ut");
+                System.out.println("5. Kundvagn");
             } else {
                 System.out.println("4. Logga in");
             }
@@ -153,6 +158,14 @@ public class Main {
                         session.logout();
                     } else {
                         handleLogin(new CustomerRepository());
+                    }
+                    break;
+
+                case "5":
+                    if (session.isLoggedIn()) {
+                        cartController.runMenu();
+                    } else {
+                        System.out.println("Du måste vara inloggad för att kunna använda kundvagnen.");
                     }
                     break;
 

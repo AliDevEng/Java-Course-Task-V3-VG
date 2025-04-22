@@ -15,9 +15,13 @@ public class UserSession {
     // Kund inloggad
     private Customer loggedInCustomer;
 
+    // Kundvagn för den aktiva sessionen
+    private ShoppingCart shoppingCart;
+
     // Singleton-mönster / private konstruktor
     private UserSession() {
         loggedInCustomer = null;
+        shoppingCart = new ShoppingCart();
     }
 
     // Metod för att få den enda instansen (Singleton)
@@ -43,9 +47,20 @@ public class UserSession {
         return loggedInCustomer != null;
     }
 
+    // Hämta användarens kundvagn
+    public ShoppingCart getShoppingCart() {
+        return shoppingCart;
+    }
+
+
+    public void setShoppingCart(ShoppingCart cart) {
+        this.shoppingCart = cart;
+    }
+
     // Logga ut nuvarande användare
-    public void logout () {
+    public void logout() {
         loggedInCustomer = null;
+        shoppingCart = new ShoppingCart(); // Skapa en ny tom kundvagn
         System.out.println("Du har loggats ut.");
     }
 }
