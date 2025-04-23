@@ -9,6 +9,7 @@ import customer.CustomerRepository;
 import order.OrderController;
 import product.ProductController;
 import shoppingcart.ShoppingCartController;
+import review.ReviewController;
 
 
 import java.sql.SQLException;
@@ -25,6 +26,9 @@ public class Main {
         CustomerRepository customerRepository = new CustomerRepository();
         ShoppingCartController cartController = new ShoppingCartController();
 
+        ReviewController reviewController = new ReviewController();
+
+
         // Skapa en instans 
         UserSession userSession = UserSession.getInstance();
 
@@ -32,7 +36,7 @@ public class Main {
         handleLogin (customerRepository);
 
         // 30. Visa huvudmeny och hantera valet
-        showMainMenu(customerController, productController, orderController, cartController);
+        showMainMenu(customerController, productController, orderController, cartController, reviewController);
 
 
         // Jag hade problem att stänga menyn så använde följande:
@@ -103,7 +107,8 @@ public class Main {
             CustomerController customerController,
             ProductController productController,
             OrderController orderController,
-            ShoppingCartController cartController) throws SQLException {
+            ShoppingCartController cartController,
+            ReviewController reviewController) throws SQLException {
 
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
@@ -127,6 +132,8 @@ public class Main {
             if (session.isLoggedIn()) {
                 System.out.println("4. Logga ut");
                 System.out.println("5. Kundvagn");
+                System.out.println("6. Recensioner");
+
             } else {
                 System.out.println("4. Logga in");
             }
@@ -162,10 +169,20 @@ public class Main {
                     break;
 
                 case "5":
+                    // Hantera kundvagn
                     if (session.isLoggedIn()) {
                         cartController.runMenu();
                     } else {
                         System.out.println("Du måste vara inloggad för att kunna använda kundvagnen.");
+                    }
+                    break;
+
+                case "6":
+                    // Hantera recension
+                    if (session.isLoggedIn()) {
+                        reviewController.runMenu();
+                    } else {
+                        System.out.println("Du måste vara inloggad för att hantera recensioner.");
                     }
                     break;
 
